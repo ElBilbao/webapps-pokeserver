@@ -111,7 +111,20 @@ function successfulRequest(name, pokeInfo) {
     let parent =
       event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
     let toDelete = event.target.parentNode.parentNode.parentNode.parentNode;
-    // TODO delete card
+
+    // Remove weight from deck sum
+    deckWeight = parseFloat(document.getElementById("totalWeight").innerHTML);
+    deletedTitle = event.target.parentNode.parentNode.getElementsByClassName(
+      "card-title"
+    )[0].innerText;
+
+    // Parsing weight out of title
+    let start = deletedTitle.indexOf("- ") + 2;
+    let end = deletedTitle.indexOf("kg");
+    deletedWeight = deletedTitle.substr(start, end - start);
+
+    document.getElementById("totalWeight").innerHTML =
+      Math.round((deckWeight - deletedWeight) * 10) / 10;
 
     parent.removeChild(toDelete);
   });
@@ -138,12 +151,10 @@ function successfulRequest(name, pokeInfo) {
   newAlert.setAttribute("id", "successAlerter");
   newAlert.innerHTML = "Added " + pokeName + "!";
 
-  // totalWeight = Integer.valueOf(
-  //   document.getElementById("totalWeight").innerHTML
-  // );
+  totalWeight = parseFloat(document.getElementById("totalWeight").innerHTML);
 
   document.getElementById("totalWeight").innerHTML =
-    totalWeight + pokejson.weight;
+    Math.round((totalWeight + pokejson.weight) * 10) / 10;
 
   log.parentNode.appendChild(newAlert);
   cols++;
@@ -159,7 +170,7 @@ function errorRequest(name, error) {
   newAlert.setAttribute("class", "alert alert-danger");
   newAlert.setAttribute("role", "alert");
   newAlert.setAttribute("id", "errorAlerter");
-  newAlert.innerHTML = "ERROR: " + name + " is not a valid Pokemon.";
+  newAlert.innerHTML = "ERROR 404: " + name + " is not a valid Pokemon.";
 
   log.parentNode.appendChild(newAlert);
 
