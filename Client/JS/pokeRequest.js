@@ -2,7 +2,7 @@ function pokeRequest(name) {
   let ajaxPromise = new Promise((resolve, reject) => {
     // Initialize the HTTP request.
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://pokeapi.co/api/v2/pokemon/" + name);
+    xhr.open("GET", "http://127.0.0.1:3000/pokemon?name=" + name);
 
     // Track the state changes of the request.
     xhr.onreadystatechange = function () {
@@ -65,10 +65,7 @@ function successfulRequest(name, pokeInfo) {
   let newCardImage = document.createElement("img");
   newCardImage.setAttribute("class", "card-img-top");
   let pokeID = pokejson.id;
-  newCardImage.setAttribute(
-    "src",
-    "https://pokeres.bastionbot.org/images/pokemon/" + pokeID + ".png"
-  );
+  newCardImage.setAttribute("src", pokejson.imageURL);
   newCardImage.style.padding = "10px";
   newCardImage.style.background = "grey";
 
@@ -81,7 +78,7 @@ function successfulRequest(name, pokeInfo) {
   let firstLetter = pokeName.charAt(0).toUpperCase();
   pokeName = firstLetter + pokeName.slice(1);
   console.log(pokeName);
-  newCardTitle.innerHTML = pokeName + " (ID: " + pokeID + ")";
+  newCardTitle.innerHTML = pokeName + " - " + pokejson.weight + "kg";
 
   let innerTextTitle = document.createElement("h6");
   innerTextTitle.innerHTML = "Abilities:";
@@ -101,10 +98,7 @@ function successfulRequest(name, pokeInfo) {
   let newCardBtn = document.createElement("a");
   newCardBtn.setAttribute("class", "btn btn-primary");
   newCardBtn.style.paddingRight = "10px";
-  newCardBtn.setAttribute(
-    "href",
-    "https://pokemon.fandom.com/wiki/" + pokejson.name
-  );
+  newCardBtn.setAttribute("href", pokejson.moreInfoURL);
   newCardBtn.innerHTML = "More Info";
 
   let newBtnCol = document.createElement("div");
@@ -143,6 +137,13 @@ function successfulRequest(name, pokeInfo) {
   newAlert.setAttribute("role", "alert");
   newAlert.setAttribute("id", "successAlerter");
   newAlert.innerHTML = "Added " + pokeName + "!";
+
+  // totalWeight = Integer.valueOf(
+  //   document.getElementById("totalWeight").innerHTML
+  // );
+
+  document.getElementById("totalWeight").innerHTML =
+    totalWeight + pokejson.weight;
 
   log.parentNode.appendChild(newAlert);
   cols++;
